@@ -129,7 +129,7 @@ export default function Registration ()  {
     <Text style={{ textAlign: 'center' }}>Already have an account?</Text>
     <Text
       style={{ color: 'blue', textDecorationLine: 'underline', textAlign: 'center' }}
-      onPress={() => navigation.navigate('login')}
+      onPress={() => router.push('login')}
     >
       Login here
     </Text>

@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import api from '../utils/Api';
+import axios from 'axios';
+import { useRouter } from 'expo-router';
 
-const RecipeForm = ({ route, navigation }) => {
-  const { recipeId } = route.params || {};
+const RecipeForm = () => {
+  const router = useRouter();
+  const [recipeId, setRecipeId] = useState(null);
+
+  useEffect(() => {
+    // Check if recipeId is in router.query
+    if (router.query?.recipeId) {
+      setRecipeId(router.query.recipeId);
+    }
+  }, [router.query]);
+
   const [title, setTitle] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
@@ -11,9 +21,9 @@ const RecipeForm = ({ route, navigation }) => {
   const [cookingTime, setCookingTime] = useState('');
 
   const fetchRecipeDetails = async () => {
-    if (!recipeId) return;
+    if (!recipeId) return; // If no recipeId, skip fetching
     try {
-      const response = await api.get(`/recipes/${recipeId}`);
+      const response = await axios.get(`/recipes/${recipeId}`);
       const { title, ingredients, instructions, servings, cookingTime } = response.data;
       setTitle(title);
       setIngredients(ingredients.join(', '));
@@ -38,10 +48,10 @@ const RecipeForm = ({ route, navigation }) => {
         servings: Number(servings),
         cookingTime: Number(cookingTime),
       };
-  
-      await api.post('/recipes', payload);
+
+      await axios.post('/recipes', payload);
       Alert.alert('Recipe added successfully!');
-      navigation.goBack();
+      router.push('/'); // Navigate back after saving
     } catch (error) {
       console.error('Error creating recipe:', error.response?.data || error.message);
     }
