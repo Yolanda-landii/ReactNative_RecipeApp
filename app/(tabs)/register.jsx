@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Text, Alert, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 
 const BASE_URL = 'http://172.20.10.2:3000'; // Replace with your local IP
 
-const Registration = ({ navigation }) => {
+export default function Registration ()  {
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -15,6 +16,7 @@ const Registration = ({ navigation }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleRegister = async () => {
     setLoading(true);
@@ -36,7 +38,7 @@ const Registration = ({ navigation }) => {
       await AsyncStorage.setItem('token', token);
 
       Alert.alert('Success', 'User registered successfully');
-      navigation.navigate('login');
+      router.push('login');
     } catch (error) {
       console.error('Registration error:', error.response?.data || error.message);
       setError(error.response?.data?.message || 'An error occurred');
@@ -136,4 +138,3 @@ const Registration = ({ navigation }) => {
   );
 };
 
-export default Registration;

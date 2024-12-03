@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import api from '../utils/Api';
+import { useRouter } from 'expo-router';
 
-const HomeScreen = ({ navigation }) => {
+export default function HomeScreen () {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const fetchRecipes = async () => {
     try {
@@ -21,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Button title="Add Recipe" onPress={() => navigation.navigate('recipeForm')} />
+      <Button title="Add Recipe" onPress={() => router.push('recipeForm')} />
       {loading ? (
         <Text>Loading...</Text>
       ) : (
@@ -31,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.recipeCard}
-              onPress={() => navigation.navigate('recipeDetails', { recipeId: item._id })}
+              onPress={() => router.push('recipeDetails', { recipeId: item._id })}
             >
               <Text style={styles.title}>{item.title}</Text>
             </TouchableOpacity>
@@ -48,4 +50,3 @@ const styles = StyleSheet.create({
   title: { fontSize: 18, fontWeight: 'bold' },
 });
 
-export default HomeScreen;

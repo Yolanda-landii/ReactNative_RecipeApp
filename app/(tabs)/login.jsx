@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, Alert, ActivityIndicator } from 'react-native';
 import axios from 'axios';
+import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login = ({ navigation }) => {
+export default function Login  () {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async () => {
     setLoading(true);
     try {
         const response = await axios.post(
-            'http://10.50.85.6:3000/login', 
+            'http://10.50.85.6:3000/auth/login', 
             { email, password }, 
             { headers: { 'Content-Type': 'application/json' } }
           );
@@ -21,7 +23,7 @@ const Login = ({ navigation }) => {
       await AsyncStorage.setItem('token', token);
       await AsyncStorage.setItem('user', JSON.stringify(user));
 
-      navigation.navigate('index');
+      router.push('home');
     } catch (error) {
       const errorMsg = error.response?.data?.message || 'Login failed. Please try again.';
       Alert.alert('Error', errorMsg);
@@ -71,7 +73,7 @@ const Login = ({ navigation }) => {
         Don't have an account?{' '}
         <Text
           style={{ color: 'blue' }}
-          onPress={() => navigation.navigate('register')}
+          onPress={() => router.push('register')}
         >
           Register here
         </Text>
@@ -82,4 +84,4 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+

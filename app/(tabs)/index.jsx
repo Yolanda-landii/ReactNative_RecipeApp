@@ -1,24 +1,14 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './index';
-// import RecipeForm from './(tabs)/recipes/recipeForm';
-// import RecipeDetails from './(tabs)/recipes/recipeDetails';
-import Registration from './register'; 
-import Login from './login';
+import { View, Text, Button } from 'react-native';
+import { useRouter } from 'expo-router';
 
-const Stack = createStackNavigator();
+export default function HomeScreen() {
+  const router = useRouter();
 
-export default function App() {
   return (
-    // <NavigationContainer>
-      <Stack.Navigator initialRouteName="login">
-        <Stack.Screen name="login" component={Login} options={{ headerShown: false }}/>
-        <Stack.Screen name="register" component={Registration} options={{ headerShown: false }} />
-        <Stack.Screen name="home" component={HomeScreen} options={{ headerShown: false }}/>
-        {/* <Stack.Screen name="recipeForm" component={RecipeForm} options={{ headerShown: false }}/> */}
-        {/* <Stack.Screen name="recipeDetails" component={RecipeDetails} options={{ headerShown: false }}/> */}
-      </Stack.Navigator>
-    
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Welcome to the Recipe App!</Text>
+      <Button title="Go to Login" onPress={() => router.push('/login')} />
+    </View>
   );
 }
