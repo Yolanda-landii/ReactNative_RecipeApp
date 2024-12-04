@@ -14,7 +14,7 @@ export default function Login  () {
     setLoading(true);
     try {
         const response = await axios.post(
-            'http://10.50.85.6:3000/auth/login', 
+            'http://172.20.10.2:3000/auth/login', 
             { email, password }, 
             { headers: { 'Content-Type': 'application/json' } }
           );
